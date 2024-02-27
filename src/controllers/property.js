@@ -91,37 +91,25 @@ const handlePostProperty = async (req, res) => {
             address,
             images,
             availability,
+            agent
         } = req.body
-        const token = req.headers.token
-        const agent = jwt.decode(token).id
-        const user = await User.findById(agent)
 
-        if (!user) {
-            res.status(500).json({ status: 500, message: 'Something went wrong' })
-            return
-        }
+        const data = new Property({
+            title,
+            description,
+            price,
+            bedrooms,
+            bathrooms,
+            bathroomType,
+            location,
+            address,
+            images,
+            availability,
+            agent
+        })
 
-        if (user.userType === 'admin' || user.userType === 'agent') {
-            const data = new Property({
-                title,
-                description,
-                price,
-                bedrooms,
-                bathrooms,
-                bathroomType,
-                location,
-                address,
-                images,
-                availability,
-                agent
-            })
-
-            await data.save()
-            res.status(201).json({ status: 201, data, message: 'Property added successfully' })
-
-        } else {
-            res.status(401).json({ status: 401, message: "Unauthorized" })
-        }
+        await data.save()
+        res.status(201).json({ status: 201, data, message: 'Property added successfully' })
 
     } catch (error) {
         console.error('Error adding property:', error)
