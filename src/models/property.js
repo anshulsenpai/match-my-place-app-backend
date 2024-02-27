@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const propertySchema = new mongoose.Schema({
     title: {
@@ -33,12 +34,26 @@ const propertySchema = new mongoose.Schema({
         type: [String], // Array of image URLs
         required: true
     },
+    availability: {
+        type: String,
+        enum: ['buy', 'sell', 'rent'],
+    },
+    isSold: {
+        type: Boolean,
+        default: false
+    },
+    likes: {
+        type: Number,
+        default: 0,
+    },
     agent: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     }
 }, { timestamps: true });
+
+propertySchema.plugin(aggregatePaginate);
 
 const Property = mongoose.model('Property', propertySchema);
 
