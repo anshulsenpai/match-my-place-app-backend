@@ -4,11 +4,11 @@ const jwt = require("jsonwebtoken")
 
 async function handleRegister(req, res) {
     try {
-        const { firstName, lastname, username, gender, email, password, phone, profile, serType
+        const { firstname, lastname, username, gender, email, password, phone, profile, serType
         } = req.body
 
-        if (firstName && lastname && username && email && password && phone) {
-            const user = new User({ firstName, lastname, username, gender, email, password, phone, profile, serType })
+        if (firstname && lastname && username && email && password && phone) {
+            const user = new User({ firstname, lastname, username, gender, email, password, phone, profile, serType })
             const result = await user.save()
             console.log("User created")
             res.status(201).json({ status: 201, message: "User created" })
@@ -17,7 +17,7 @@ async function handleRegister(req, res) {
             res.status(500).json({ status: 500, message: "please provide all required details" })
         }
     } catch (error) {
-        console.log("Error in user register")
+        console.log("Error in user register", error)
         res.status(500).json({ status: 500, message: error.message })
     }
 }
